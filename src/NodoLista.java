@@ -7,132 +7,153 @@
  *
  * @author gabriel
  */
-public class NodoLista  <E>{
+public class NodoLista<E> {
 
-    public E elt;
-    public NodoLista<E> next;
+    protected E dato;
+    protected NodoLista<E> siguiente;
 
     public NodoLista() {
-        this.elt = null;
-        this.next = null;
-    }
-    public NodoLista(E elt,NodoLista<E> next) {
-        this.elt = elt;
-        this.next = next;
+        this.dato = null;
+        this.siguiente = null;
     }
 
-    public NodoLista(E[] elts,int n) {
-        this.elt = elts[n];
-        int nextIndex = n + 1;
-        if (nextIndex == elts.length) {
-            this.next = null;
+    public NodoLista(
+            E dato,
+            NodoLista<E> siguiente) {
+        this.dato = dato;
+        this.siguiente = siguiente;
+    }
+
+    public NodoLista(
+            E[] dato,
+            int n) {
+        this.dato = dato[n];
+        int indice = n + 1;
+        if (indice == dato.length) {
+            this.siguiente = null;
             return;
         }
-        this.next = new NodoLista<E>(elts, nextIndex);
+        this.siguiente = new NodoLista<E>(dato, indice);
     }
 
-    public E next() {
-        return this.next.elt;
+    public E getDato() {
+        return this.dato;
     }
 
-    public boolean hasNext() {
-        return this.next == null;
+    public void setDato(E dato) {
+        this.dato = dato;
     }
 
+
+    public NodoLista<E> getSiguiente() {
+        return this.siguiente;
+    }
+
+    public void setSiguiente(NodoLista<E> siguiente) {
+        this.siguiente = siguiente;
+    }
+
+    public E datoSiguiente() {
+        return this.getSiguiente().getDato();
+    }
+
+    public boolean tieneSig() {
+        return this.siguiente == null;
+    }
+    
     public int size() {
-        if (this.next == null) {
+        if (this.siguiente == null) {
             return 1;
         }
-        return this.next.size() + 1;
+        return this.siguiente.size() + 1;
     }
 
-    public void add(E elt) {
-        if (this.next != null) {
-            next.add(elt);
+    public void insertar(E dato) {
+        if (this.siguiente != null) {
+            siguiente.insertar(dato);
             return;
         }
 
-        this.next = new NodoLista<E>(elt, null);
+        this.siguiente = new NodoLista<E>(dato, null);
     }
 
-    public boolean add(int n, E elt) {
+    public boolean insertar(int n, E dato) {
         if (n > 1) {
-            if (this.next == null)
+            if (this.siguiente == null)
                 return false;
-            return this.next.add(n - 1, elt);
+            return this.siguiente.insertar(n - 1, dato);
         }
 
-        this.next = new NodoLista<E>(elt, this.next);
+        this.siguiente = new NodoLista<E>(dato, this.siguiente);
         return true;
     }
 
-    public E get(int n) {
+    public E buscar(int n) {
         if (n > 0) {
-            if (this.next == null)
+            if (this.siguiente == null)
                 return null;
-            return this.next.get(n - 1);
+            return this.siguiente.buscar(n - 1);
         }
 
-        return this.elt;
+        return this.dato;
     }
 
-
-    public NodoLista<E> getLastNode() {
-        if (this.next == null)
+    public NodoLista<E> buscarUltimo() {
+        if (this.siguiente == null)
             return this;
 
-        return this.next.getLastNode();
+        return this.getSiguiente().buscarUltimo();
     }
 
-    public E getLast() {
-        return this.getLastNode().elt;
+    
+    public E ultimo() {
+        return this.buscarUltimo().getDato();
     }
 
-    public E remove(int n) {
-        if (this.next == null)
+    public E eliminar(int n) {
+        if (this.siguiente == null)
             return null;
 
         if (n > 1)
-            return this.next.remove(n + 1);
+            return this.getSiguiente().eliminar(n + 1);
 
-        E o = this.next.elt;
-        this.next = this.next.next;
+        E o = this.getSiguiente().getDato();
+        this.setSiguiente(this.getSiguiente().getSiguiente());
         return o;
     }
 
-    public int indexOf(Object elt, int n) {
-        if (this.elt.equals(elt))
+    public int indice(Object dato, int n) {
+        if (this.dato.equals(dato))
             return n;
 
-        if (this.next == null)
+        if (this.siguiente == null)
             return -1;
 
-        return this.next.indexOf(elt, n + 1);
+        return this.siguiente.indice(dato, n + 1);
     }
-    
-    public boolean set(int n, E elt) {
+
+    public boolean cambiarDato(int n, E dato) {
         if (n == 0) {
-            this.elt = elt;
+            this.dato = dato;
             return true;
         }
 
-        if (this.next == null)
+        if (this.siguiente == null)
             return false;
 
-        return this.next.set(n - 1, elt);
+        return this.getSiguiente().cambiarDato(n - 1, dato);
     }
 
-    public boolean setAsEnd(int n, E elt) {
+    public boolean insertarUltimo(int n, E dato) {
         if (n == 0) {
-            this.elt = elt;
-            this.next = null;
+            this.dato = dato;
+            this.siguiente = null;
             return true;
         }
 
-        if (this.next == null)
+        if (this.siguiente == null)
             return false;
 
-        return this.next.setAsEnd(n - 1, elt);
+        return this.getSiguiente().insertarUltimo(n - 1, dato);
     }
-
 }
