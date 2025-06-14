@@ -8,10 +8,9 @@
  * @author gabriel
  */
 public class NodoCola<E> {
-
-    public NodoLista<E> primero;
-    public NodoLista<E> ultimo;
-    public int size;
+    private NodoLista<E> primero;
+    private NodoLista<E> ultimo;
+    private int size;
 
     public NodoCola() {
         primero = null;
@@ -20,30 +19,45 @@ public class NodoCola<E> {
     }
 
     public void encolar(NodoLista<E> nodo) {
-        if (isEmpty()) {
+        if (esVacia()) {
             primero = nodo;
         } else {
-            ultimo.next = nodo;
+            ultimo.setSiguiente(nodo);
         }
         ultimo = nodo;
         size++;
     }
 
+    public void desencolar(E dato) {
+        this.encolar(new NodoLista<>(dato, null));
+    }
+
     public NodoLista<E> desencolar() {
-        if (isEmpty()) {
+        if (esVacia()) {
             return null;
         }
-        NodoLista<E> desencolado = primero;
-        primero = primero.next;
+        NodoLista<E> eliminado = primero;
+        primero = primero.getSiguiente();
         if (primero == null) {
             ultimo = null;
         }
         size--;
-        return desencolado;
+        return eliminado;
     }
 
-    public boolean isEmpty() {
+    public boolean esVacia() {
         return size == 0;
     }
 
+    public int size() {
+        return size;
+    }
+
+    public NodoLista<E> getPrimero() {
+        return primero;
+    }
+
+    public NodoLista<E> getUltimo() {
+        return ultimo;
+    }
 }
