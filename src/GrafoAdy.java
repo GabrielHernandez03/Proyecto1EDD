@@ -235,4 +235,5 @@ public class GrafoAdy<E> {
     public int tamaño() {
         return elementos.length;
     }
+    
 }
