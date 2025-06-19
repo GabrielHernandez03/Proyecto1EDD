@@ -16,6 +16,7 @@ public class Proyecto1HernandezGabriel {
      */
     public static void main(String[] args) {
         MainFrame window = new MainFrame();
+        
     }
     
 }
